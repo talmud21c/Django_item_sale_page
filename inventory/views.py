@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse
 from django.views.generic import (
     View,
     CreateView,
@@ -14,9 +15,9 @@ from .filters import ArtFilter
 
 # 재고 표시 뷰
 class ArtListView(FilterView):
-    filterset_class = ArtFilter
     template_name = 'inventory_list.html'
     paginate_by = 10
+    filterset_class = ArtFilter
 
 
 # 작품 등록 뷰
@@ -32,6 +33,9 @@ class ArtCreateView(SuccessMessageMixin, CreateView):
         context["title"] = '작품 등록'
         context["savebtn"] = '저장하기'
         return context
+
+    def get_success_url(self):
+        return reverse('inventory_list')
 
 
 # 작품 수정 뷰

@@ -56,7 +56,7 @@
             {% if delbtn %}
                 <a href="{% url 'delete-art' object.pk %}" class="btn ghost-red"> Delete Stock </a>
             {% endif %}
-            <a href="{% url 'art' %}" class="btn ghost-button">Cancel</a>
+            <a href="{% url 'inventory_list' %}" class="btn ghost-button">Cancel</a>
         </div>
 
     </form>

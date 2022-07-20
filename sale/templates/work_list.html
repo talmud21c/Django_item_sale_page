@@ -57,9 +57,9 @@
 
     <h3>작품 목록</h3>
 
-    <form class="d-flex search mt-5" role="search">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success" name="q" value="{{ q }}" type="submit"><i class="bi bi-search"></i></button>
+    <form class="d-flex search mt-5" role="search" method="get" action="{% url 'sale:art' %}">
+        <input name="q" class="form-control me-2" type="text" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success" type="submit"><i class="bi bi-search"></i></button>
     </form>
 
     <div class="works my-5" id="ads">

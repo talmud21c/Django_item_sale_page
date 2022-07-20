@@ -1,10 +1,9 @@
-from django.shortcuts import render, get_object_or_404, redirect
+from django.db.models import Q
+from django.shortcuts import render, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import View, ListView
-from django_filters.views import FilterView
 from inventory.models import Art
 from .forms import SaleForm
-from inventory.filters import ArtFilter
 from django.contrib import messages
 
 from django.utils.decorators import method_decorator
@@ -12,10 +11,17 @@ from django.utils.decorators import method_decorator
 from .models import SaleBill
 
 
-class ArtListView(FilterView):
-    filterset_class = ArtFilter
+class ArtListView(ListView):
+    model = Art
     template_name = 'work_list.html'
     paginate_by = 10
+
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        object_list = Art.objects.filter(
+            Q(title__icontains=query) | Q(artist__icontains=query)
+        )
+        return object_list
 
 
 @method_decorator(csrf_exempt, name='dispatch')
