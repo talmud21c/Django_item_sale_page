@@ -1,3 +1,4 @@
+from django.core.paginator import Paginator
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
@@ -14,7 +15,15 @@ from .models import SaleBill
 class ArtListView(ListView):
     model = Art
     template_name = 'work_list.html'
-    paginate_by = 10
+    paginate_by = 5
+
+    def get_context_data(self, **kwargs):
+        context = super(ArtListView, self).get_context_data()
+        page = context['page_obj']
+        paginator = page.paginator
+        pagelist = paginator.get_elided_page_range(page.number, on_each_side=3, on_ends=0)
+        context['pagelist'] = pagelist
+        return context
 
     def get_queryset(self):
         query = self.request.GET.get('q')
