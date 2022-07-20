@@ -74,7 +74,11 @@ class SaleView(View):
         # context = {
         #     'form': form,
         # }
-        return render(request, self.template_name, {'model': model})
+        from django.http import HttpResponseRedirect
+        from django.shortcuts import reverse
+
+        return HttpResponseRedirect(reverse('sale:bills'))
+        # return render(request, self.template_name, {'model': model})
 
 
 class BillView(ListView):
