@@ -66,7 +66,7 @@
 
         {% for art in object_list %}
             {% if art.quantity == 0 %}
-                <div class="card rounded" onclick="location.href='{% url 'sale:sale' art.art_id %}'" style="cursor:pointer;">
+                <div class="card rounded" style="cursor:pointer;">
                     <div class="card-image text-center">
                         <img class="img-fluid p-1"
                              src="{{ art.art.url }}"
