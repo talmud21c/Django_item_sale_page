@@ -18,13 +18,15 @@ class ArtListView(ListView):
 
     def get_queryset(self):
         query = self.request.GET.get('q')
-        object_list = Art.objects.filter(
-            Q(title__icontains=query) | Q(artist__icontains=query)
-        )
+        if query:
+            object_list = Art.objects.filter(
+                Q(title__icontains=query) | Q(artist__icontains=query)
+            )
+        else:
+            object_list = Art.objects.all()
         return object_list
 
 
-@method_decorator(csrf_exempt, name='dispatch')
 class SaleView(View):
     template_name = 'work_detail.html'
 
