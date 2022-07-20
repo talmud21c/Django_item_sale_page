@@ -5,6 +5,7 @@ from inventory.models import Art
 class SaleBill(models.Model):
     id = models.AutoField(primary_key=True)
     art = models.ForeignKey(Art, on_delete=models.CASCADE)
+    item_title = models.CharField(blank=False, null=False, max_length=100)
     wallet_addr = models.CharField(blank=False, null=False, max_length=42)
     purchase_quantity = models.PositiveIntegerField(blank=False, null=False)
     total_price = models.PositiveIntegerField(blank=False, null=False)
@@ -23,5 +24,5 @@ class SaleBill(models.Model):
         sales = Art.objects.filter(id=self)
         total = 0
         for item in sales:
-            total += item.totalprice
+            total += item.total_price
         return total

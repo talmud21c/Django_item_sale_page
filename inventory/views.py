@@ -57,7 +57,7 @@ class ArtDeleteView(View):
 
     def get(self, request, pk):
         art = get_object_or_404(Art, pk=pk)
-        return render(request, self.template_name, {'object': art})
+        return render(request, self.template_name, {'art': art})
 
     def post(self, request, pk):
         art = get_object_or_404(Art, pk=pk)

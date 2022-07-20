@@ -1,0 +1,78 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+@import url('https://fonts.googleapis.com/css?family=Montserrat');
+
+body {
+    font-family: 'Montserrat', sans-serif;
+
+}
+
+.search {
+    justify-content: center;
+}
+
+.search .form-control {
+    width: 50% !important;
+}
+
+/* Category Ads */
+#ads {
+    margin: 30px 0 30px 0;
+    /*margin: 0 auto;*/
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 2rem;
+}
+
+
+#ads .card-detail-badge {
+    background: #FEBD01;
+    text-align: center;
+    border-radius: 5px;
+    color: #000000;
+    padding: 5px 10px;
+    font-size: 15px;
+}
+
+
+#ads .card:hover {
+    background: #fff;
+    box-shadow: 12px 15px 20px 0 rgba(46, 61, 73, 0.3);
+    border-radius: 4px;
+    transition: all 0.1s ease;
+}
+
+#ads .card-body {
+    padding: 0.5rem !important;
+}
+
+
+#ads .card-title h5 {
+    font-size: 18px;
+}
+
+
+#ads .card.sold {
+
+}
+
+#ads .card .sold-content {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+}
+
+#ads .card .sold-content .text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    text-align: center;
+    transform: translate(-50%, -50%);
+    color: red;
+    font-weight: bold;
+}

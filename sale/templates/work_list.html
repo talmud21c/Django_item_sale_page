@@ -1,0 +1,141 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css">
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/work_list.css' %}">
+
+    <title>ASYAAF admin</title>
+</head>
+
+<body>
+
+<div class="header">
+    <div class="container">
+        <nav class="navbar navbar-expand-sm bg-light">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="{% url 'sale:art' %}">ASYAAF Admin</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarNav"
+                        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="{% url 'sale:art' %}">작품 목록</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'sale:bills' %}">판매 목록</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="user">
+                    <ul class="navbar-nav lh-lg">
+                        <li class="nav-item"><i class="bi bi-person-circle"></i></li>
+                        <li class="nav-item ms-2">User01</li>
+                        <li class="nav-item">
+                            <button type="button" class="btn btn-sm btn-secondary ms-2">Logout</button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+</div>
+
+<div class="container mt-5">
+
+
+    <h3>작품 목록</h3>
+
+    <form class="d-flex search mt-5" role="search">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success" type="submit"><i class="bi bi-search"></i></button>
+    </form>
+
+    <div class="works my-5" id="ads">
+
+        {% for art in object_list %}
+            {% if art.quantity == 0 %}
+                <div class="card rounded" onclick="location.href='{% url 'sale:sale' art.art_id %}'" style="cursor:pointer;">
+                    <div class="card-image text-center">
+                        <img class="img-fluid p-1"
+                             src="{{ art.art.url }}"
+                             alt="Alternate Text"/>
+                    </div>
+                    <div class="card-body text-center">
+                        <div class="card-title m-auto">
+                            <h5 class="title">{{ art.title }}</h5>
+                            <h6 class="author">{{ art.artist }}</h6>
+                        </div>
+                    </div>
+                    <div class="card-body text-center">
+                        <span class="card-detail-badge workId">{{ art.art_id }}</span>
+                        <span class="card-detail-badge count">{{ art.quantity }}</span>
+                        <span class="card-detail-badge amount">&#8361;{{ art.price }}</span>
+                    </div>
+                    <div class="sold-content rounded">
+                        <h2 class="text">Sold out</h2>
+                    </div>
+                </div>
+            {% else %}
+            <div class="card rounded" onclick="location.href='{% url 'sale:sale' art.art_id %}'" style="cursor:pointer;">
+                <div class="card-image text-center">
+                    <img class="img-fluid p-1"
+                         src="{{ art.art.url }}"
+                         alt="Alternate Text"/>
+                </div>
+                <div class="card-body text-center">
+                    <div class="card-title m-auto">
+                        <h5 class="title">{{ art.title }}</h5>
+                        <h6 class="author">{{ art.artist }}</h6>
+                    </div>
+                </div>
+                <div class="card-body text-center">
+                    <span class="card-detail-badge workId">{{ art.art_id }}</span>
+                    <span class="card-detail-badge count">{{ art.quantity }}</span>
+                    <span class="card-detail-badge amount">&#8361;{{ art.price }}</span>
+                </div>
+            </div>
+            {% endif %}
+        {% endfor %}
+
+    </div>
+
+    <nav aria-label="Page navigation example" class="mt-5">
+        <ul class="pagination justify-content-center">
+            <li class="page-item disabled">
+                <a class="page-link">Previous</a>
+            </li>
+            <li class="page-item active" aria-current="page">
+                <a class="page-link" href="#">1</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="#">2</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="#">3</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="#">Next</a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+
+<!-- bootstrap -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+        crossorigin="anonymous"></script>
+</body>
+</html>

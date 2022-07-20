@@ -1,0 +1,211 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css">
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/work_detail.css' %}">
+
+    <title>ASYAAF admin</title>
+</head>
+<body>
+
+<div class="header">
+    <div class="container">
+        <nav class="navbar navbar-expand-sm bg-light">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="{% url 'sale:art' %}">ASYAAF Admin</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarNav"
+                        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="{% url 'sale:art' %}">작품 목록</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'sale:bills' %}">판매 목록</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="user">
+                    <ul class="navbar-nav lh-lg">
+                        <li class="nav-item"><i class="bi bi-person-circle"></i></li>
+                        <li class="nav-item ms-2">User01</li>
+                        <li class="nav-item">
+                            <button type="button" class="btn btn-sm btn-secondary ms-2">Logout</button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+</div>
+
+
+<div class="container mt-5">
+
+    <form method="post" action="">
+    {% csrf_token %}
+    {% for art in art %}
+    <div class="work mt-5">
+        <div class="work-header">
+            <h2 class="">{{ art.artist }} - {{ art.title }}</h2>
+        </div>
+
+        <hr/>
+
+        <div class="row work-body justify-content-around mt-5">
+
+            <div class="col-5 image-container">
+                <img src="{{ art.art.url }}" class="img-fluid" alt="aixcon">
+            </div>
+
+            <div class="col-5 description">
+
+                <form class="row g-3 needs-validation" novalidate autocomplete="off">
+
+                    <div class="col-md-12">
+                        <label for="title" class="form-label">Title</label>
+                        <input type="text" class="form-control" id="title" value="{{ art.title }}" required disabled
+                               readonly>
+                    </div>
+
+                    <div class="col-md-12 mt-4">
+                        <label for="author" class="form-label">Artist</label>
+                        <input type="text" class="form-control" id="author" value="{{ art.artist }}" required
+                               disabled readonly>
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 mt-4">
+                        <label for="workId" class="form-label">Work ID</label>
+                        <input type="number" class="form-control" id="workId" value="{{ art.art_id }}" required disabled
+                               readonly>
+                    </div>
+
+                    <div class="col-md-12 mt-4">
+                        <label for="amount" class="form-label">Amount (&#8361;)</label>
+                        <input type="number" class="form-control" id="amount" name="totalPrice" value="{{ art.price }}" required
+                               disabled>
+                    </div>
+
+                    <div class="col-md-12 mt-4 count-container">
+                        <label for="counter" class="form-label">Count</label>
+                        <div class="input-group mb-3">
+
+                            <div class="input-group-prepend">
+                                <button type="button" class="btn btn-dark btn-md" id="minus-btn" disabled>
+                                    <i class="bi bi-dash-lg"></i>
+                                </button>
+                            </div>
+
+                            <input type="number" id="counter" class="form-control-sm text-center counter"
+                                   name="purchaseQuantity" value="1" min="1" readonly/>
+
+
+                            <div class="input-group-prepend">
+                                <button type="button" class="btn btn-dark btn-md" id="plus-btn">
+                                    <i class="bi bi-plus-lg"></i>
+                                </button>
+                            </div>
+
+                            <div class="d-inline-block mt-1 ms-5">
+                                <span>구매가능수량:</span>
+                                <span id="availableQuantity">{{ art.quantity }}</span>
+                            </div>
+
+                        </div>
+                        <div class="invalid-feedback">
+                            Please provide a valid zip.
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-12 mt-4">
+                        <label for="paymentId" class="form-label">Payment ID</label>
+                        <!--                        <input type="number" class="form-control" id="paymentId" value="" required minlength="8" maxlength="8"-->
+                        <!--                               oninput="if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"/>-->
+                        <!--                        <input type="text" class="form-control d-inline-block" id="paymentId" value="" required minlength="8" maxlength="8"/>-->
+                        <!--                        <input type="text" minlength="8" maxlength="8" id="paymentId" class="form-control"
+                                                       oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+                                                />-->
+                        <input type="text" class="form-control d-inline-block" id="paymentId" name="billNo" value="" required
+                               minlength="8" maxlength="8" pattern="[0-9]+"/>
+                        <div class="invalid-feedback">
+                            올바른 결제 번호를 입력해주세요.
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 mt-4">
+                        <label for="walletAddress" class="form-label">Wallet Address</label>
+                        <input type="text" class="form-control d-inline-block" id="walletAddress" name="walletAddr" value="" required
+                               minlength="42" maxlength="42" pattern="^[a-zA-Z0-9]+$"/>
+                        <div class="input-group-prepend d-inline-block">
+                            <button type="button" class="btn btn-outline-dark btn-md" id="camera-btn"
+                                    data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                <i class="bi bi-camera"></i>
+                            </button>
+                        </div>
+
+                        <div class="invalid-feedback">
+                            올바른 지갑 주소를 입력해주세요.
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 mt-5">
+                        <button class="btn btn-primary btn-lg" type="submit">Sale</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    </form>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">QR코드를 카메라에 노출시켜 주세요</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="frame" class="text-center">
+                        <div id="loadingMessage">
+                            🎥 비디오 스트림에 액세스 할 수 없습니다
+                        </div>
+                        <canvas id="canvas"></canvas>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- bootstrap -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+        crossorigin="anonymous"></script>
+<script src="{% static 'js/workDetail.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jsQR.js' %}"></script>
+<script src="{% static 'js/qr-reader.js' %}"></script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+body {
+    font-family: 'Montserrat', sans-serif;
+}
+
+.search{
+    justify-content: center;
+}
+
+.search .form-control{
+    width: 50% !important;
+}
