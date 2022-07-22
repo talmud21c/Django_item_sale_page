@@ -1,21 +1,22 @@
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404
-from django.views.decorators.csrf import csrf_exempt
-from django.views.generic import View, ListView
+from django.views.generic import View, ListView, UpdateView
 from inventory.models import Art
 from .forms import SaleForm
 from django.contrib import messages
 
-from django.utils.decorators import method_decorator
+from django.http import HttpResponseRedirect
+from django.shortcuts import reverse
 
 from .models import SaleBill
+from .utils.slack import slack_notify
 
 
 class ArtListView(ListView):
     model = Art
     template_name = 'work_list.html'
-    paginate_by = 5
+    paginate_by = 25
 
     def get_context_data(self, **kwargs):
         context = super(ArtListView, self).get_context_data()
@@ -68,7 +69,14 @@ class SaleView(View):
         art.save()
         model.save()
 
-        messages.success(request, "판매 요청이 성공적으로 완료되었습니다.")
+        sb_cnt = SaleBill.objects.all().count()
+        sb_pending = SaleBill.objects.filter(is_send='pending').count()
+        sb_success = SaleBill.objects.filter(is_send='success').count()
+
+        slack_message = f"[전송 요청 등록] 작품명: {art.title}, 구매수량 - {model.purchase_quantity}\r\n요청 진행 중: {sb_pending}, 판매 완료: {sb_success}"
+        slack_notify(slack_message, "#asyaaf-sale-bot-test", username="판매 알림봇")
+
+        return HttpResponseRedirect(reverse('sale:bills'))
 
         # never use form before perfectly understand Django Forms
 
@@ -91,10 +99,6 @@ class SaleView(View):
         # context = {
         #     'form': form,
         # }
-        from django.http import HttpResponseRedirect
-        from django.shortcuts import reverse
-
-        return HttpResponseRedirect(reverse('sale:bills'))
         # return render(request, self.template_name, {'model': model})
 
 
@@ -104,3 +108,18 @@ class BillView(ListView):
     context_object_name = 'bills'
     ordering = ['-purchase_req_at']
     paginate_by = 10
+
+
+class AdminListView(ListView):
+    template_name = 'admin_list.html'
+    model = SaleBill
+    context_object_name = 'bills'
+    ordering = ['-purchase_req_at']
+    paginate_by = 10
+
+
+class AdminUpdateView(UpdateView):
+    template_name = 'admin_update.html'
+    model = SaleBill
+    fields = ['transaction_hash', 'is_send']
+    success_url = '/transfer'

@@ -2,7 +2,7 @@ from django.db import models
 
 
 class Art(models.Model):
-    art_id = models.IntegerField(primary_key=True)
+    art_id = models.CharField(primary_key=True, max_length=50)
     art = models.ImageField(upload_to='inventory/art/%Y/%m/%d')
     title = models.CharField(max_length=100, blank=False, null=False)
     artist = models.CharField(max_length=50, blank=False, null=False)

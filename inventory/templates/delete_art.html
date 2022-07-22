@@ -1,7 +1,7 @@
-{% extends "base.html" %}
+{% extends "inventory_base.html" %}
 
 
-{% block title %} Delete Stock {% endblock title %}
+{% block title %} {{title}} {% endblock title %}
 
 
 {% block content %}
@@ -17,7 +17,7 @@
 
         <div class="form-group">  
             <button type="submit" class="btn ghost-red">삭제</button>
-            <a href="{% url 'art' %}" class="btn ghost-button">취소</a>
+            <a href="{% url 'inventory_list' %}" class="btn ghost-button">취소</a>
         </div>
         
     </form>

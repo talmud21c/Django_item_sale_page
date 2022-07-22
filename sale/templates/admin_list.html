@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div class="container mt-5">
+
+        <h3>판매 목록</h3>
+
+        <form class="d-flex search mt-5" role="search">
+            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success" type="submit"><i class="bi bi-search"></i></button>
+        </form>
+
+        <table class="table table-hover mt-5">
+            <thead class="table-dark text-center align-middle">
+            <tr>
+                <th>Date</th>
+                <th>Approver</th>
+                <th>title</th>
+                <th>Work ID</th>
+                <th>Payment ID</th>
+                <th>Wallet Address</th>
+                <th>Transaction Hash</th>
+                <th>Count</th>
+                <th>Amount</th>
+                <th>Status</th>
+            </tr>
+            </thead>
+            <tbody class="text-center align-middle">
+            {% for bill in bills %}
+                <tr>
+                    <td>{{ bill.purchase_req_at }}</td>
+                    <td>양진민</td>
+                    <td><a href="{% url 'sale:admin_update' bill.pk %}">{{ bill.item_title }}</a></td>
+                    <td>{{ bill.art_id }}</td>
+                    <td>{{ bill.bill_no }}</td>
+                    <td>{{ bill.wallet_addr }}</td>
+                    <td><a href="https://etherscan.io/tx/{{ bill.transaction_hash }}">{{ bill.transaction_hash }}</a></td>
+                    <td>{{ bill.purchase_quantity }}</td>
+                    <td class="amount">{{ bill.total_price }}</td>
+                    <td>{{ bill.is_send }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock content %}
+{% block pagination %}
+    <ul class="pagination justify-content-center mb-4">
+        {% if page_obj.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.previous_page_number }}">&larr;</a>
+            </li>
+        {% else %}
+            <li class="page-item disabled">
+                <a class="page-link" href="#">&larr;</a>
+            </li>
+        {% endif %}
+
+        {% for index in pagelist %}
+            {% if index == page_obj.number %}
+                <li class="page-item active">
+                    <span class="page-link">{{ index }}</span>
+                </li>
+            {% else %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ index }}">{{ index }}</a>
+                </li>
+            {% endif %}
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.next_page_number }}">&rarr;</a>
+            </li>
+        {% else %}
+            <li class="page-item disabled">
+                <a class="page-link" href="#">&rarr;</a>
+            </li>
+        {% endif %}
+    </ul>
+{% endblock pagination %}

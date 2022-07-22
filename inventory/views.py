@@ -67,4 +67,4 @@ class ArtDeleteView(View):
         art = get_object_or_404(Art, pk=pk)
         art.delete()
         messages.success(request, self.success_message)
-        return redirect('/art')
+        return redirect('/inventory')

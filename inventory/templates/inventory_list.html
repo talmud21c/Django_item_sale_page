@@ -1,13 +1,13 @@
+{% extends "inventory_base.html" %}
+
+
+{% block title %} {{title}} {% endblock title %}
+
+
+{% block content %}
 <table class="table table-css">
 {% load widget_tweaks %}
-    <form method="get">
-        <div class="input-group search">
-            {% render_field filter.form.name class="form-control textinput" placeholder="Search by stock name" %}
-            <div class="input-group-append">
-                <button type="submit" class="btn btn-pink"> 검색 </button>
-            </div>
-        </div>
-    </form>
+<a href="{% url 'new-art' %}" class="btn ghost-button">작품 등록</a>
 
     <br>
 
@@ -68,3 +68,4 @@
             {% endif %}
         </div>
     {% endif %}
+{% endblock content %}
